@@ -25,7 +25,7 @@ pipeline {
                 withSonarQubeEnv('SonarQube') {
                     sh '''
                     mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-                    -Dsonar.projectKey=Production-Easy-Wallet-Flow-2
+                    -Dsonar.projectKey=Production-Easy-wallet-Flow-2
                     '''
                 }
             }
