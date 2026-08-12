@@ -25,30 +25,12 @@ pipeline {
                 withSonarQubeEnv('SonarQube') {
                     sh '''
                     mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-                    -Dsonar.projectKey=Production-Easy-Wallet
+                    -Dsonar.projectKey=Production-Easy-wallet-Flow-2
+
                     '''
                 }
             }
         }
 
-        stage('Upload to Nexus') {
-            steps {
-                sh 'mvn deploy -DskipTests'
-            }
-        }
 
-        stage('Deploy to Tomcat') {
-            steps {
-                deploy adapters: [
-                    tomcat9(
-                        credentialsId: 'Tomcat_Credentials-Mrinmay',
-                        path: '',
-                        url: 'http://3.111.37.238:8080'
-                    )
-                ],
-                contextPath: 'easy-wallet',
-                war: '**/*.war'
-            }
-        }
-    }
-}
+

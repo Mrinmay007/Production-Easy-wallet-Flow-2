@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.easywallet</groupId>
-    <artifactId>Production-Easy-Wallet</artifactId>
+    <artifactId>Production-Easy-wallet-Flow-2</artifactId>
     <version>1.0.0</version>
 
     <packaging>war</packaging>
@@ -30,7 +30,7 @@
 
     <build>
 
-        <finalName>Production-Easy-Wallet</finalName>
+        <finalName>Production-Easy-wallet-Flow-2</finalName>
 
         <plugins>
 
@@ -50,12 +50,7 @@
 
     </build>
 
-    <distributionManagement>
-        <repository>
-            <id>NEXUS_SERVER_ID</id>
-            <name>Flow-1 Repository</name>
-            <url>http://15.207.85.0:8081/repository/flow-1/</url>
-        </repository>
-    </distributionManagement>
-
 </project>
+
+
+
