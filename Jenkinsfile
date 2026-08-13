@@ -33,7 +33,7 @@ pipeline {
 
         stage('Docker Deployment') {
             steps {
-                sshagent(credentials: ['Jenkins-Docker-server-connection-Mrinmay']) {
+                sshagent(credentials: ['Jenkins-Docker-server-connection-Mrinamy']) {
                     sh '''
                         ssh -o StrictHostKeyChecking=no \
                         ec2-user@172.31.42.137 \
@@ -49,13 +49,18 @@ pipeline {
 
                         ssh -o StrictHostKeyChecking=no \
                         ec2-user@172.31.42.137 '
-                            cd /home/ec2-user/docker-build &&
-                            docker build -t production-easy-wallet-flow-2:1.0 . &&
-                            docker rm -f easy-wallet-flow-2 2>/dev/null || true &&
+                            set -e
+                            cd /home/ec2-user/docker-build
+
+                            docker build \
+                            -t production-easy-wallet-flow-2:1.0 .
+
+                            docker rm -f easy-wallet-flow-2 2>/dev/null || true
+
                             docker run -d \
-                                --name easy-wallet-flow-2 \
-                                -p 9091:8080 \
-                                production-easy-wallet-flow-2:1.0
+                            --name easy-wallet-flow-2 \
+                            -p 9091:8080 \
+                            production-easy-wallet-flow-2:1.0
                         '
                     '''
                 }
