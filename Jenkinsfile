@@ -33,7 +33,7 @@ pipeline {
 
         stage('Docker Deployment') {
             steps {
-                sshagent(credentials: ['Jenkins-Docker-server-connection-Mrinamy']) {
+                sshagent(credentials: ['Jenkins-Docker-server-connection-Mrinmay']) {
                     sh '''
                         ssh -o StrictHostKeyChecking=no \
                         ec2-user@172.31.42.137 \
