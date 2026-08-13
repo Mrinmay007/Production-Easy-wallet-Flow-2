@@ -34,6 +34,7 @@ pipeline {
         stage('Docker Deployment') {
             steps {
                 sshagent(credentials: ['Jenkins-Docker-server-connection-Mrinmay']) {
+
                     sh '''
                         ssh -o StrictHostKeyChecking=no \
                         ec2-user@172.31.42.137 \
@@ -50,6 +51,7 @@ pipeline {
                         ssh -o StrictHostKeyChecking=no \
                         ec2-user@172.31.42.137 '
                             set -e
+
                             cd /home/ec2-user/docker-build
 
                             docker build \
@@ -63,6 +65,40 @@ pipeline {
                             production-easy-wallet-flow-2:1.0
                         '
                     '''
+                }
+            }
+        }
+
+        stage('Push Docker Image to Nexus') {
+            steps {
+
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'Nexus-Credentials-Mrinmay',
+                        usernameVariable: 'NEXUS_USERNAME',
+                        passwordVariable: 'NEXUS_PASSWORD'
+                    )
+                ]) {
+
+                    sshagent(credentials: ['Jenkins-Docker-server-connection-Mrinmay']) {
+
+                        sh '''
+                            ssh -o StrictHostKeyChecking=no \
+                            ec2-user@172.31.42.137 \
+                            "
+                            echo \\"\\$NEXUS_PASSWORD\\" | docker login 172.31.39.89:8085 \
+                            --username \\"\\$NEXUS_USERNAME\\" \
+                            --password-stdin
+
+                            docker tag \
+                            production-easy-wallet-flow-2:1.0 \
+                            172.31.39.89:8085/flow-2:1.0
+
+                            docker push \
+                            172.31.39.89:8085/flow-2:1.0
+                            "
+                        '''
+                    }
                 }
             }
         }
